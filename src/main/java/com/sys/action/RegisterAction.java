@@ -1,6 +1,5 @@
 package com.sys.action;
 
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -10,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -41,6 +41,7 @@ public class RegisterAction {
 		return mav;
 	}
 
+	/** 注册 **/
 	@RequestMapping(value = "userRegister.html", method = RequestMethod.POST)
 	public ModelAndView userRegister(HttpServletRequest request,
 			HttpServletResponse response,
@@ -78,6 +79,65 @@ public class RegisterAction {
 		ModelAndView mav = new ModelAndView(new RedirectView(
 				Common.DEFAULT_REGISTER_SUCCESS_REDIRECT_PAGE));
 		return mav;
+	}
+
+	/**
+	 * 注册接口 返回注册状态 1成功，2邮箱已经注册，3异常注册失败; 页面jsonp 调用函数名 callbackRegister;
+	 * 
+	 * @param request
+	 * @param response
+	 * @param userName
+	 * @param userPwd
+	 * @return
+	 */
+
+	@RequestMapping(value = "userRegister.json", method = RequestMethod.GET)
+	@ResponseBody
+	public String userRegisterJson(HttpServletRequest request,
+			HttpServletResponse response,
+			@RequestParam("userName") String userName,
+			@RequestParam("userPwd") String userPwd) {
+
+		response.setContentType("text/plain");
+		response.setHeader("Pragma", "No-cache");
+		response.setHeader("Cache-Control", "no-cache");
+		response.setDateHeader("Expires", 0);
+		String callback = request.getParameter("callbackRegister");
+
+		String status = "1";
+		User userVerify = new User();
+		userVerify = userService.getByEmailAddress(userName);
+		if (userVerify != null) {
+			status = "2";
+			return callback + "(" + status + ")";
+		}
+		// send email
+		boolean verifyEmail = SendEmailVerify.sendEmail(userName);
+
+		if (verifyEmail) {
+			User user = new User();
+			user.setUserName(userName);
+			System.out.println(userPwd);
+			userPwd = CommonUtil.md5Encode(userPwd);
+			user.setUserPwd(userPwd);
+			user.setStatus("0");// 0 未激活 1激活 9禁用
+
+			String createDate = CommonUtil.createDate();
+			user.setCreateDate(createDate);
+
+			try {
+				userService.saves(user);
+			} catch (Exception e) {
+				status = "3";
+				return callback + "(" + status + ")";
+			}
+
+		} else {
+			status = "3";
+			return callback + "(" + status + ")";
+		}
+
+		return callback + "(" + status + ")";
 	}
 
 	@RequestMapping(value = "verifyEmail.html", method = RequestMethod.GET)

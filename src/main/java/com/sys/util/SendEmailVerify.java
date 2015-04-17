@@ -27,7 +27,7 @@ public class SendEmailVerify {
 		email.setHostName(Common.SERVER_EMAIL_HOSTNAME);
 		email.setAuthentication(Common.SERVER_EMAIL_NAME,
 				Common.SERVER_EMAIL_PWD);
-		email.setFrom(Common.SERVER_EMAIL_NAME, "发件人姓名wjj");
+		email.setFrom(Common.SERVER_EMAIL_NAME, Common.SERVER_EMAIL_TITLE);
 		email.setCharset("utf-8");
 
 		Map<String, String> params = new HashMap<String, String>();

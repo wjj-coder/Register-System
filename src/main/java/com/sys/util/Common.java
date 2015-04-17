@@ -30,6 +30,8 @@ public class Common {
 			.getProperty("server_email_pwd");
 	public static final String SERVER_EMAIL_HOSTNAME = PropertiesUtil
 			.getProperty("server_email_hostname");
+	public static final String SERVER_EMAIL_TITLE = PropertiesUtil
+			.getProperty("server_email_title");
 	
 	/**
 	 * 登陆注册 页面跳转 默认地址 login 

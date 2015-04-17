@@ -12,7 +12,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "user_register")
-public class User implements Serializable{
+public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -33,6 +33,9 @@ public class User implements Serializable{
 
 	@Column(name = "create_date")
 	private String createDate;
+
+	@Column(name = "cname")
+	private String cName;
 
 	public Integer getUserId() {
 		return userId;
@@ -72,6 +75,14 @@ public class User implements Serializable{
 
 	public void setCreateDate(String createDate) {
 		this.createDate = createDate;
+	}
+
+	public String getcName() {
+		return cName;
+	}
+
+	public void setcName(String cName) {
+		this.cName = cName;
 	}
 
 }
