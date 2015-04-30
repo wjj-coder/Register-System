@@ -37,7 +37,7 @@ public class LoginOutAction {
 					Cookie token = new Cookie(ck.getName(), null);
 					token.setMaxAge(0);
 					token.setPath("/");
-					if (Common.SERVER_URL.startsWith("http://www")) {
+					if (Common.SERVER_URL.startsWith(Common.SERVER_URL)) {
 						token.setDomain(".ipantre.com");
 					}
 					response.addCookie(token);

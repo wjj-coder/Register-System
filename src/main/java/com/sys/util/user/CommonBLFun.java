@@ -57,6 +57,7 @@ public class CommonBLFun {
     public static void addUVO(UVO uvo, HttpServletResponse res) {
     	String cvalue = marshall(uvo);
     	Cookie cookie = new Cookie(Common.UVO,cvalue);
+//    	if (Common.SERVER_URL.startsWith(Common.SERVER_URL)) {
     	if (Common.SERVER_URL.startsWith("http://www")) {
     		cookie.setDomain(".ipantre.com");
     	}
@@ -66,6 +67,7 @@ public class CommonBLFun {
     }
     public static void addtag(String tag, HttpServletResponse res) {
     	Cookie cookie = new Cookie("tag",tag);
+//    	if (Common.SERVER_URL.startsWith(Common.SERVER_URL)) {
     	if (Common.SERVER_URL.startsWith("http://www")) {
     		cookie.setDomain(".ipantre.com");
     	}
